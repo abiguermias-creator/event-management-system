@@ -1,0 +1,5 @@
+node_modules
+postgresql_18.exe
+.env
+npm-debug.log
+.DS_Store
