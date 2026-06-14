@@ -1,10 +1,7 @@
-const express = require('express');
-const app = express();
+const app = require('./app');
 
-app.get('/', (req, res) => {
-    res.send('OK ROOT');
-});
+const PORT = 3000;
 
-app.listen(3000, () => {
-    console.log('SERVER STARTED');
+app.listen(PORT, () => {
+    console.log("SERVER RUNNING ON http://localhost:" + PORT);
 });

@@ -8,7 +8,10 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// EJS
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// EJS setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -19,9 +22,9 @@ app.get('/', (req, res) => {
 });
 
 
-// ================= EVENTS + SEARCH =================
+// ================= EVENTS PAGE =================
 app.get('/events', async (req, res) => {
-    const search = req.query.search;
+    const search = req.query.search || "";
 
     let result;
 
@@ -38,7 +41,7 @@ app.get('/events', async (req, res) => {
 
     res.render('events', {
         events: result.rows,
-        search
+        search: search   // IMPORTANT FIX
     });
 });
 
@@ -48,8 +51,6 @@ app.get('/events/new', (req, res) => {
     res.render('create');
 });
 
-
-// ================= CREATE EVENT =================
 app.post('/events', async (req, res) => {
     const { name, date, location } = req.body;
 
@@ -62,7 +63,7 @@ app.post('/events', async (req, res) => {
 });
 
 
-// ================= EDIT PAGE =================
+// ================= EDIT =================
 app.get('/events/edit/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -74,8 +75,6 @@ app.get('/events/edit/:id', async (req, res) => {
     res.render('edit', { event: result.rows[0] });
 });
 
-
-// ================= UPDATE EVENT =================
 app.post('/events/update/:id', async (req, res) => {
     const { id } = req.params;
     const { name, date, location } = req.body;
@@ -89,7 +88,7 @@ app.post('/events/update/:id', async (req, res) => {
 });
 
 
-// ================= DELETE EVENT =================
+// ================= DELETE =================
 app.post('/events/delete/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -102,7 +101,7 @@ app.post('/events/delete/:id', async (req, res) => {
 });
 
 
-// ================= BOOK TICKET =================
+// ================= BOOK =================
 app.post('/events/book/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -122,7 +121,7 @@ app.post('/events/book/:id', async (req, res) => {
 });
 
 
-// ================= EVENT DETAILS =================
+// ================= DETAILS =================
 app.get('/events/:id', async (req, res) => {
     const { id } = req.params;
 
